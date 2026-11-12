@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>PitiPausa — Auditoría Oficial de Pitis a Medias</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       VARIABLES Y TEMA: TABACO, BRASA Y CENIZA (PURE CSS, NO FRAMEWORKS)
+       ========================================================================== */
+    :root {
+      --bg-deep: #0e0d0c;
+      --bg-surface: #181614;
+      --bg-elevated: #221f1c;
+      --bg-input: #141210;
+      --border-subtle: #2e2925;
+      --border-ember: rgba(255, 94, 26, 0.4);
+
+      --text-primary: #f5efe6;
+      --text-secondary: #b5aba0;
+      --text-muted: #787067;
+
+      --ember-core: #ff5e1a;
+      --ember-glow: #ff8c3b;
+      --ember-dim: rgba(255, 94, 26, 0.14);
+      --filter-ochre: #d99b52;
+      --paper-cream: #efe6d5;
+
+      --seal-green: #38b27b;
+      --seal-green-bg: rgba(56, 178, 123, 0.12);
+      --warning-amber: #f59e0b;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 999px;
+
+      --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+      --shadow-ember: 0 4px 20px -2px rgba(255, 94, 26, 0.35);
+
+      --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      background-color: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(255, 94, 26, 0.11) 0%, transparent 55%),
+        radial-gradient(circle at 90% 90%, rgba(217, 155, 82, 0.05) 0%, transparent 40%);
+    }
+
+    /* ==========================================================================
+       CONTENEDOR PRINCIPAL (MOBILE FIRST -> DESKTOP DASHBOARD)
+       ========================================================================== */
+    .app-shell {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      padding: 16px 16px 96px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Cabecera */
+    .app-header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(145deg, #25211d, #171513);
+      border: 1px solid var(--border-ember);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-ember);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-title span {
+      color: var(--ember-core);
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--warning-amber);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .sync-badge.online .sync-dot {
+      background-color: var(--seal-green);
+      box-shadow: 0 0 8px var(--seal-green);
+    }
+
+    /* Banner Anti-Raterío */
+    .immutable-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(90deg, rgba(56, 178, 123, 0.12) 0%, rgba(24, 22, 20, 0.6) 100%);
+      border: 1px solid rgba(56, 178, 123, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 9px 12px;
+      font-size: 0.76rem;
+      color: #b7ebd3;
+    }
+
+    .immutable-banner svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--seal-green);
+    }
+
+    .immutable-banner strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       LAYOUT GRID (1 COLUMNA EN MÓVIL, 2 COLUMNAS EN PC)
+       ========================================================================== */
+    .dashboard-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .col-primary,
+    .col-secondary {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Tarjetas Generales */
+    .card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .card-title svg {
+      width: 20px;
+      height: 20px;
+      color: var(--ember-core);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       TARJETA DE TURNO ("¿A QUIÉN LE TOCA PONER?")
+       ========================================================================== */
+    .turn-card {
+      border-color: var(--border-ember);
+      background: linear-gradient(165deg, #211c18 0%, #161412 100%);
+    }
+
+    .turn-spotlight {
+      background-color: rgba(14, 13, 12, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .turn-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .turn-person {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--ember-glow);
+      line-height: 1.15;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .turn-reason {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      background-color: var(--ember-dim);
+      border: 1px solid rgba(255, 94, 26, 0.25);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      margin-top: 4px;
+    }
+
+    .last-piti-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      padding: 10px 12px;
+      background-color: var(--bg-elevated);
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .last-piti-summary strong {
+      color: var(--text-primary);
+    }
+
+    /* Visualizador de Cigarro a Medias */
+    .cigar-visualizer {
+      margin: 14px 0 18px 0;
+    }
+
+    .cigar-bar {
+      height: 22px;
+      width: 100%;
+      display: flex;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #3a332c;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .cigar-filter {
+      width: 24%;
+      background: repeating-linear-gradient(
+        45deg,
+        #d99b52,
+        #d99b52 6px,
+        #c88a42 6px,
+        #c88a42 12px
+      );
+      border-right: 3px solid #b5742c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #2b1a08;
+      text-transform: uppercase;
+    }
+
+    .cigar-paper {
+      flex: 1;
+      background: linear-gradient(180deg, #f4ece1 0%, #dfd5c6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      color: #2a2521;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      position: relative;
+    }
+
+    .cigar-paper::after {
+      content: "50% / 50%";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 1px dashed #8c8275;
+      padding-left: 6px;
+      color: #5c5349;
+    }
+
+    .cigar-ember {
+      width: 18px;
+      background: radial-gradient(circle at left, #ff9800 0%, #ff3d00 65%, #3d352e 100%);
+      animation: emberPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes emberPulse {
+      0%, 100% { filter: brightness(1); box-shadow: 0 0 8px #ff5e1a; }
+      50% { filter: brightness(1.35); box-shadow: 0 0 16px #ff8c3b; }
+    }
+
+    /* Marcador de Pitis por Persona */
+    .scoreboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .score-row {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .score-row.is-next {
+      border-color: rgba(255, 94, 26, 0.45);
+    }
+
+    .score-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .smoker-identity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text-primary);
+    }
+
+    .smoker-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: var(--ember-dim);
+      border: 1px solid var(--border-ember);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--ember-glow);
+      text-transform: uppercase;
+    }
+
+    .score-count {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--paper-cream);
+      background-color: var(--bg-deep);
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .score-count span {
+      color: var(--ember-core);
+    }
+
+    .score-progress-track {
+      width: 100%;
+      height: 6px;
+      background-color: var(--bg-deep);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+
+    .score-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--filter-ochre), var(--ember-core));
+      border-radius: var(--radius-pill);
+      transition: width 0.4s ease;
+    }
+
+    /* ==========================================================================
+       FORMULARIO DE REGISTRO ("SELLAR NUEVO PITI")
+       ========================================================================== */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .form-label-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* Píldoras de selección rápida de fumador */
+    .quick-smokers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .smoker-pill {
+      appearance: none;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 9px 14px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+      min-height: 42px;
+    }
+
+    .smoker-pill:hover {
+      border-color: var(--filter-ochre);
+    }
+
+    .smoker-pill.active {
+      background-color: var(--ember-dim);
+      border-color: var(--ember-core);
+      color: #ffffff;
+      box-shadow: 0 0 0 2px rgba(255, 94, 26, 0.2);
+    }
+
+    .smoker-pill svg {
+      width: 15px;
+      height: 15px;
+      color: var(--ember-glow);
+    }
+
+    .text-input {
+      width: 100%;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 13px 14px;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 48px;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--ember-core);
+      box-shadow: 0 0 0 3px rgba(255, 94, 26, 0.15);
+    }
+
+    .text-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Fila Fecha y Hora */
+    .datetime-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-now {
+      appearance: none;
+      background: none;
+      border: 1px solid var(--border-subtle);
+      color: var(--ember-glow);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background-color: var(--bg-elevated);
+    }
+
+    .btn-now:hover {
+      border-color: var(--ember-core);
+    }
+
+    /* Píldoras de contexto / situación */
+    .context-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .context-chip {
+      appearance: none;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 6px 11px;
+      border-radius: var(--radius-pill);
+      font-size: 0.76rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .context-chip.active {
+      background-color: var(--bg-elevated);
+      border-color: var(--filter-ochre);
+      color: var(--paper-cream);
+    }
+
+    /* Botón Principal de Sellar Piti */
+    .btn-submit {
+      width: 100%;
+      min-height: 54px;
+      background: linear-gradient(135deg, #ff6a26 0%, #e04400 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: var(--shadow-ember);
+      transition: transform 0.15s ease, filter 0.15s ease;
+      margin-top: 6px;
+    }
+
+    .btn-submit:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.985);
+    }
+
+    .btn-submit svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .audit-footnote {
+      margin-top: 10px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .audit-footnote svg {
+      width: 13px;
+      height: 13px;
+      color: var(--seal-green);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       HISTORIAL INMUTABLE ("HISTORIAL SELLADO")
+       ========================================================================== */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+
+    .filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-btn {
+      appearance: none;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .filter-btn.active {
+      background-color: var(--paper-cream);
+      color: var(--bg-deep);
+      border-color: var(--paper-cream);
+    }
+
+    .history-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .history-item {
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--ember-core);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.2s ease;
+    }
+
+    .history-item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .history-who {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .history-who-name {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .history-stated-time {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ember-glow);
+      background-color: var(--ember-dim);
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+    }
+
+    .history-stated-time svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .history-context {
+      font-size: 0.84rem;
+      color: var(--paper-cream);
+      background-color: rgba(14, 13, 12, 0.45);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .history-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border-subtle);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .seal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--seal-green);
+      background-color: var(--seal-green-bg);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .seal-badge svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-muted);
+      border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-md);
+    }
+
+    .empty-state svg {
+      width: 42px;
+      height: 42px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      opacity: 0.6;
+    }
+
+    /* ==========================================================================
+       MODAL DE CONFIRMACIÓN ANTI-RATERÍO (SIN ALERT/CONFIRM NATIVO)
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(5, 5, 4, 0.82);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 400px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-ember);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      transform: translateY(12px);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-backdrop.open .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--ember-dim);
+      border: 1px solid var(--border-ember);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px auto;
+      color: var(--ember-core);
+    }
+
+    .modal-icon-wrap svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .modal-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .modal-preview {
+      background-color: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .modal-preview-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .modal-preview-row span:first-child {
+      color: var(--text-muted);
+    }
+
+    .modal-preview-row strong {
+      color: var(--paper-cream);
+      font-family: var(--font-mono);
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 10px;
+    }
+
+    .btn-cancel {
+      appearance: none;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn-confirm {
+      appearance: none;
+      background: linear-gradient(135deg, var(--seal-green), #248f5e);
+      border: none;
+      color: #ffffff;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-confirm svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* Toast de notificación */
+    .toast-msg {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background-color: #1c2923;
+      border: 1px solid var(--seal-green);
+      color: #e6fff3;
+      padding: 12px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 0.84rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      z-index: 1100;
+      opacity: 0;
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.28s ease;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .toast-msg.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast-msg svg {
+      width: 18px;
+      height: 18px;
+      color: var(--seal-green);
+      flex-shrink: 0;
+    }
+
+    /* Animación humo SVG */
+    .smoke-path {
+      stroke-dasharray: 24;
+      animation: smokeRise 3.2s infinite linear;
+    }
+
+    @keyframes smokeRise {
+      0% { stroke-dashoffset: 48; opacity: 0.25; }
+      50% { opacity: 0.85; }
+      100% { stroke-dashoffset: 0; opacity: 0.25; }
+    }
+
+    /* ==========================================================================
+       ADAPTACIÓN DESKTOP / PC (PANTALLAS ANCHAS)
+       ========================================================================== */
+    @media (min-width: 860px) {
+      .app-shell {
+        max-width: 1080px;
+        padding: 32px 28px 64px 28px;
+        gap: 28px;
+      }
+
+      .app-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 20px;
+      }
+
+      .immutable-banner {
+        max-width: 460px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.15fr;
+        align-items: start;
+        gap: 24px;
+      }
+
+      .col-primary {
+        position: sticky;
+        top: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- CABECERA -->
+    <header class="app-header">
+      <div class="header-top">
+        <div class="brand-group">
+          <div class="brand-logo" aria-hidden="true">
+            <!-- SVG: Cigarro humeante con brasa encendida -->
+            <svg width="32" height="32" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path class="smoke-path" d="M27 17C27 13 30 12 29 8C28 4 24 4 25 1" stroke="#b5aba0" stroke-width="1.8" stroke-linecap="round"/>
+              <path class="smoke-path" d="M31 18C31 15 34 14 33 10C32 7 29 6 30 3" stroke="#787067" stroke-width="1.4" stroke-linecap="round"/>
+              <rect x="3" y="21" width="8" height="6" rx="1.5" fill="#d99b52"/>
+              <rect x="11" y="21" width="16" height="6" fill="#f5efe6"/>
+              <rect x="27" y="21" width="4" height="6" rx="1" fill="#ff5e1a"/>
+              <circle cx="30" cy="24" r="2.5" fill="#ff9800" opacity="0.75"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="brand-title">Piti<span>Pausa</span></h1>
+            <p class="brand-subtitle">Auditoría oficial de pitis a medias</p>
+          </div>
+        </div>
+
+        <div id="syncBadge" class="sync-badge" title="Estado de sincronización">
+          <span class="sync-dot"></span>
+          <span id="syncText">Conectando...</span>
+        </div>
+      </div>
+
+      <div class="immutable-banner">
+        <!-- SVG: Escudo Candado Anti-Raterío -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <rect x="9" y="11" width="6" height="5" rx="1"/>
+          <path d="M10 11V9a2 2 0 1 1 4 0v2"/>
+        </svg>
+        <div>
+          <strong>Registro Inmutable Anti-Raterío:</strong> Cada piti sellado queda grabado sin opción a editar ni borrar.
+        </div>
+      </div>
+    </header>
+
+    <!-- DASHBOARD PRINCIPAL -->
+    <main class="dashboard-grid">
+
+      <!-- COLUMNA IZQUIERDA: ESTADO DE TURNO + FORMULARIO DE SELLADO -->
+      <section class="col-primary">
+
+        <!-- TARJETA 1: ¿A QUIÉN LE TOCA? -->
+        <article class="card turn-card" aria-labelledby="turnHeading">
+          <div class="card-header">
+            <h2 id="turnHeading" class="card-title">
+              <!-- SVG: Balanza / Turno -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v18"/>
+                <path d="M5 7l7-4 7 4"/>
+                <path d="M2 14l3-7 3 7c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/>
+                <path d="M16 14l3-7 3 7c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/>
+              </svg>
+              ¿A quién le toca poner?
+            </h2>
+            <span id="totalPitisCounter" class="score-count">Total: <span>0</span></span>
+          </div>
+
+          <div class="turn-spotlight">
+            <div class="turn-label">Siguiente piti corre a cuenta de</div>
+            <div id="nextTurnName" class="turn-person">Esperando primer piti...</div>
+            <div id="nextTurnReason" class="turn-reason">Registra el primer cigarro para iniciar el marcador</div>
+          </div>
+
+          <div id="lastPitiBox" class="last-piti-summary">
+            <span>Último piti puesto:</span>
+            <strong id="lastPitiText">Ninguno todavía</strong>
+          </div>
+
+          <!-- Ilustración CSS del cigarro a medias -->
+          <div class="cigar-visualizer" aria-hidden="true">
+            <div class="cigar-bar">
+              <div class="cigar-filter">Filtro</div>
+              <div class="cigar-paper">
+                <span>CALADA 1</span>
+                <span>CALADA 2</span>
+              </div>
+              <div class="cigar-ember"></div>
+            </div>
+          </div>
+
+          <!-- Marcador individual -->
+          <div id="scoreboardContainer" class="scoreboard-list">
+            <!-- Se llena dinámicamente -->
+          </div>
+        </article>
+
+        <!-- TARJETA 2: REGISTRAR PITI -->
+        <article class="card" aria-labelledby="formHeading">
+          <div class="card-header">
+            <h2 id="formHeading" class="card-title">
+              <!-- SVG: Mechero / Llama -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2c1.5 3.5 4 5.5 4 9a4 4 0 1 1-8 0c0-2 1-3.5 2-5.5 1 1.5 2 2 2-3.5z"/>
+                <rect x="6" y="14" width="12" height="8" rx="2"/>
+                <path d="M10 18h4"/>
+              </svg>
+              Anotar Piti Puesto
+            </h2>
+          </div>
+
+          <form id="pitiForm" novalidate>
+            <!-- Nombre de quien pone el piti -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="smokerNameInput">¿Quién ha puesto el piti?</label>
+                <span class="form-label-hint">Toca tu nombre o escríbelo</span>
+              </div>
+
+              <!-- Botones rápidos con nombres frecuentes -->
+              <div id="quickSmokersList" class="quick-smokers"></div>
+
+              <input
+                type="text"
+                id="smokerNameInput"
+                class="text-input"
+                placeholder="Ej. Carlos, Adri, Javi..."
+                maxlength="28"
+                autocomplete="off"
+                required
+              />
+            </div>
+
+            <!-- Hora y Fecha del piti -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="pitiTimeInput">Hora y día del piti</label>
+                <button type="button" id="setNowBtn" class="btn-now">
+                  <!-- SVG: Reloj -->
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  Poner hora actual
+                </button>
+              </div>
+
+              <div class="datetime-grid">
+                <input type="time" id="pitiTimeInput" class="text-input" required />
+                <input type="date" id="pitiDateInput" class="text-input" required />
+              </div>
+            </div>
+
+            <!-- Contexto / Nota opcional -->
+            <div class="form-group">
+              <div class="form-label">
+                <label for="pitiNoteInput">Momento / Lugar (Opcional)</label>
+                <span class="form-label-hint">Para que no haya dudas</span>
+              </div>
+
+              <div class="context-chips" id="contextChips">
+                <button type="button" class="context-chip" data-context="Con el café">Con el café</button>
+                <button type="button" class="context-chip" data-context="En el descanso">En el descanso</button>
+                <button type="button" class="context-chip" data-context="Al salir">Al salir</button>
+                <button type="button" class="context-chip" data-context="En el banco">En el banco</button>
+                <button type="button" class="context-chip" data-context="Último del paquete">Último del paquete</button>
+              </div>
+
+              <input
+                type="text"
+                id="pitiNoteInput"
+                class="text-input"
+                placeholder="Ej. Antes de entrar, al lado del metro..."
+                maxlength="60"
+              />
+            </div>
+
+            <button type="submit" class="btn-submit">
+              <!-- SVG: Candado de sellado -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                <circle cx="12" cy="16" r="1"/>
+              </svg>
+              Sellar Piti en el Registro
+            </button>
+
+            <div class="audit-footnote">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Se adjuntará automáticamente la hora exacta de envío contra trampas.
+            </div>
+          </form>
+        </article>
+
+      </section>
+
+      <!-- COLUMNA DERECHA: HISTORIAL SELLADO INMUTABLE -->
+      <section class="col-secondary">
+        <article class="card" aria-labelledby="historyHeading">
+          <div class="card-header">
+            <h2 id="historyHeading" class="card-title">
+              <!-- SVG: Libro Mayor / Lista Sellada -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <line x1="10" y1="9" x2="8" y2="9"/>
+              </svg>
+              Historial Sellado
+            </h2>
+            <span class="seal-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              Solo lectura
+            </span>
+          </div>
+
+          <!-- Barra de filtro por amigo -->
+          <div id="historyFilterBar" class="filter-bar"></div>
+
+          <!-- Lista cronológica de pitis -->
+          <div id="historyFeed" class="history-feed">
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="2" y1="15" x2="18" y2="15"/>
+                <line x1="2" y1="19" x2="18" y2="19"/>
+                <path d="M18 15h3v4h-3z"/>
+                <path d="M20 11c0-2-2-2-2-4s2-2 2-4"/>
+              </svg>
+              <p>Todavía no hay pitis registrados.</p>
+              <p style="font-size: 0.76rem; margin-top: 4px;">Cuando alguien ponga el primero, quedará grabado aquí para siempre.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL DE CONFIRMACIÓN DEFINITIVA (EVITA CLICS POR ERROR DADO QUE NO SE PUEDE BORRAR) -->
+  <div id="confirmModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <div class="modal-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M12 8v4"/>
+          <path d="M12 16h.01"/>
+        </svg>
+      </div>
+      <h3 id="modalTitle" class="modal-title">¿Sellar este piti para siempre?</h3>
+      <p class="modal-desc">
+        Por la ley <strong>Anti-Raterío</strong>, una vez confirmado no se podrá borrar ni modificar jamás.
+      </p>
+
+      <div class="modal-preview">
+        <div class="modal-preview-row">
+          <span>Pone el piti:</span>
+          <strong id="previewName">-</strong>
+        </div>
+        <div class="modal-preview-row">
+          <span>Hora indicada:</span>
+          <strong id="previewDateTime">-</strong>
+        </div>
+        <div class="modal-preview-row">
+          <span>Detalle:</span>
+          <strong id="previewNote">-</strong>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="cancelModalBtn" class="btn-cancel">Revisar</button>
+        <button type="button" id="confirmSealBtn" class="btn-confirm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Sí, sellar piti
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICACIÓN TOAST -->
+  <div id="toastMsg" class="toast-msg" role="status" aria-live="polite">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span id="toastText">Piti sellado correctamente</span>
+  </div>
+
+  <!-- LÓGICA DE APLICACIÓN + PERSISTENCIA GLOBAL FIREBASE FIRESTORE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // =========================================================================
+    // ESTADO DE LA APLICACIÓN
+    // =========================================================================
+    let pitiRecords = [];
+    let activeFilter = "ALL";
+    let pendingEntry = null;
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    let useCloud = false;
+
+    const appId = typeof __app_id !== "undefined" ? __app_id : "pitipausa-global-app";
+    const FALLBACK_STORAGE_KEY = `pitipausa_immutable_ledger_${appId}`;
+
+    // Referencias DOM
+    const syncBadge = document.getElementById("syncBadge");
+    const syncText = document.getElementById("syncText");
+    const totalPitisCounter = document.getElementById("totalPitisCounter");
+    const nextTurnName = document.getElementById("nextTurnName");
+    const nextTurnReason = document.getElementById("nextTurnReason");
+    const lastPitiText = document.getElementById("lastPitiText");
+    const scoreboardContainer = document.getElementById("scoreboardContainer");
+    const quickSmokersList = document.getElementById("quickSmokersList");
+    const smokerNameInput = document.getElementById("smokerNameInput");
+    const pitiTimeInput = document.getElementById("pitiTimeInput");
+    const pitiDateInput = document.getElementById("pitiDateInput");
+    const setNowBtn = document.getElementById("setNowBtn");
+    const contextChips = document.getElementById("contextChips");
+    const pitiNoteInput = document.getElementById("pitiNoteInput");
+    const pitiForm = document.getElementById("pitiForm");
+    const historyFilterBar = document.getElementById("historyFilterBar");
+    const historyFeed = document.getElementById("historyFeed");
+
+    // Modal DOM
+    const confirmModal = document.getElementById("confirmModal");
+    const previewName = document.getElementById("previewName");
+    const previewDateTime = document.getElementById("previewDateTime");
+    const previewNote = document.getElementById("previewNote");
+    const cancelModalBtn = document.getElementById("cancelModalBtn");
+    const confirmSealBtn = document.getElementById("confirmSealBtn");
+    const toastMsg = document.getElementById("toastMsg");
+    const toastText = document.getElementById("toastText");
+
+    // =========================================================================
+    // UTILIDADES DE FECHA, HORA Y HASH INMUTABLE
+    // =========================================================================
+    function fillCurrentDateTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+
+      pitiTimeInput.value = `${hours}:${minutes}`;
+      pitiDateInput.value = `${year}-${month}-${day}`;
+    }
+
+    // Normaliza nombres para evitar duplicados por mayúsculas/espacios ("carlos" -> "Carlos")
+    function normalizeName(raw) {
+      const trimmed = (raw || "").trim().replace(/\s+/g, " ");
+      if (!trimmed) return "";
+      return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+    }
+
+    // Genera un sello corto verificable a partir de los datos del registro
+    function computeSealHash(name, dateStr, timeStr, createdAtMs) {
+      const source = `${name}|${dateStr}|${timeStr}|${createdAtMs}`;
+      let hash = 2166136261;
+      for (let i = 0; i < source.length; i++) {
+        hash ^= source.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      return "PITI-" + (hash >>> 0).toString(16).toUpperCase().padStart(8, "0").slice(0, 6);
+    }
+
+    function formatDisplayDate(yyyyMmDd) {
+      if (!yyyyMmDd || !yyyyMmDd.includes("-")) return yyyyMmDd;
+      const [y, m, d] = yyyyMmDd.split("-");
+      return `${d}/${m}/${y}`;
+    }
+
+    function formatAuditTime(ms) {
+      if (!ms) return "--:--:--";
+      const d = new Date(ms);
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+      const ss = String(d.getSeconds()).padStart(2, "0");
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    function showToast(message) {
+      toastText.textContent = message;
+      toastMsg.classList.add("show");
+      setTimeout(() => {
+        toastMsg.classList.remove("show");
+      }, 3200);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // =========================================================================
+    // CÁLCULO DE TURNOS Y RENDERIZADO DE LA INTERFAZ
+    // =========================================================================
+    function renderAll() {
+      // Ordenar siempre del más reciente al más antiguo por timestamp real de creación
+      const sorted = [...pitiRecords].sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0));
+
+      totalPitisCounter.innerHTML = `Total: <span>${sorted.length}</span>`;
+
+      // Agrupar estadísticas por persona
+      const statsMap = new Map();
+      // Recorrer de más antiguo a más nuevo para saber orden de aparición
+      const chronological = [...sorted].reverse();
+      chronological.forEach((rec) => {
+        const cleanName = normalizeName(rec.smokerName);
+        if (!cleanName) return;
+        const current = statsMap.get(cleanName) || {
+          name: cleanName,
+          count: 0,
+          lastCreatedAtMs: 0,
+          lastStatedTime: rec.statedTime,
+          lastStatedDate: rec.statedDate
+        };
+        current.count += 1;
+        current.lastCreatedAtMs = rec.createdAtMs || 0;
+        current.lastStatedTime = rec.statedTime;
+        current.lastStatedDate = rec.statedDate;
+        statsMap.set(cleanName, current);
+      });
+
+      const participants = Array.from(statsMap.values());
+
+      // 1. Actualizar último piti puesto y quién sigue
+      if (sorted.length === 0) {
+        nextTurnName.textContent = "Cualquiera (0 pitis)";
+        nextTurnReason.textContent = "Estrenad el marcador sellando el primer piti";
+        lastPitiText.textContent = "Ninguno todavía";
+      } else {
+        const latest = sorted[0];
+        lastPitiText.textContent = `${latest.smokerName} a las ${latest.statedTime} (${formatDisplayDate(latest.statedDate)})`;
+
+        if (participants.length === 1) {
+          const single = participants[0];
+          nextTurnName.textContent = "Tu colega (falta estrenarse)";
+          nextTurnReason.textContent = `${single.name} ya ha puesto ${single.count} ${single.count === 1 ? "piti" : "pitis"} seguidos`;
+        } else {
+          // Ordenar participantes para saber a quién le toca:
+          // Criterio 1: Quien haya puesto MENOS pitis en total.
+          // Criterio 2 (en caso de empate en cantidad): Quien lleve más tiempo sin poner (menor lastCreatedAtMs).
+          const turnOrder = [...participants].sort((a, b) => {
+            if (a.count !== b.count) {
+              return a.count - b.count;
+            }
+            return a.lastCreatedAtMs - b.lastCreatedAtMs;
+          });
+
+          const nextSmoker = turnOrder[0];
+          const maxCount = Math.max(...participants.map((p) => p.count));
+
+          nextTurnName.textContent = nextSmoker.name;
+          if (nextSmoker.count < maxCount) {
+            const diff = maxCount - nextSmoker.count;
+            nextTurnReason.textContent = `Lleva ${diff} ${diff === 1 ? "piti" : "pitis"} menos en el marcador (${nextSmoker.count} vs ${maxCount})`;
+          } else {
+            nextTurnReason.textContent = `Empate a ${nextSmoker.count} pitis, pero el último lo puso ${latest.smokerName}`;
+          }
+        }
+      }
+
+      // 2. Renderizar Marcador (Scoreboard)
+      renderScoreboard(participants, sorted.length);
+
+      // 3. Renderizar Píldoras rápidas de nombres en el formulario
+      renderQuickSmokerPills(participants);
+
+      // 4. Renderizar Filtros e Historial Sellado
+      renderHistoryFilterBar(participants);
+      renderHistoryFeed(sorted);
+    }
+
+    function renderScoreboard(participants, totalCount) {
+      if (participants.length === 0) {
+        scoreboardContainer.innerHTML = "";
+        return;
+      }
+
+      // Ordenar marcador de mayor a menor aportación
+      const ranked = [...participants].sort((a, b) => b.count - a.count || b.lastCreatedAtMs - a.lastCreatedAtMs);
+
+      scoreboardContainer.innerHTML = ranked
+        .map((person) => {
+          const pct = totalCount > 0 ? Math.round((person.count / totalCount) * 100) : 0;
+          const initial = escapeHtml(person.name.charAt(0));
+          return `
+            <div class="score-row">
+              <div class="score-row-top">
+                <div class="smoker-identity">
+                  <span class="smoker-avatar">${initial}</span>
+                  <span>${escapeHtml(person.name)}</span>
+                </div>
+                <div class="score-count">
+                  <span>${person.count}</span> ${person.count === 1 ? "piti" : "pitis"} (${pct}%)
+                </div>
+              </div>
+              <div class="score-progress-track">
+                <div class="score-progress-fill" style="width: ${pct}%;"></div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderQuickSmokerPills(participants) {
+      if (participants.length === 0) {
+        quickSmokersList.innerHTML = "";
+        return;
+      }
+
+      const currentTyped = normalizeName(smokerNameInput.value);
+      quickSmokersList.innerHTML = participants
+        .map((p) => {
+          const isSelected = currentTyped.toLowerCase() === p.name.toLowerCase();
+          return `
+            <button type="button" class="smoker-pill ${isSelected ? "active" : ""}" data-smoker="${escapeHtml(p.name)}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              ${escapeHtml(p.name)}
+            </button>
+          `;
+        })
+        .join("");
+
+      // Eventos táctiles / clic en cada píldora de nombre
+      quickSmokersList.querySelectorAll(".smoker-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const chosen = btn.getAttribute("data-smoker") || "";
+          smokerNameInput.value = chosen;
+          renderQuickSmokerPills(participants);
+        });
+      });
+    }
+
+    function renderHistoryFilterBar(participants) {
+      if (participants.length <= 1) {
+        historyFilterBar.innerHTML = "";
+        return;
+      }
+
+      let html = `
+        <button type="button" class="filter-btn ${activeFilter === "ALL" ? "active" : ""}" data-filter="ALL">
+          Todos (${pitiRecords.length})
+        </button>
+      `;
+
+      participants.forEach((p) => {
+        const isActive = activeFilter === p.name;
+        html += `
+          <button type="button" class="filter-btn ${isActive ? "active" : ""}" data-filter="${escapeHtml(p.name)}">
+            ${escapeHtml(p.name)} (${p.count})
+          </button>
+        `;
+      });
+
+      historyFilterBar.innerHTML = html;
+
+      historyFilterBar.querySelectorAll(".filter-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeFilter = btn.getAttribute("data-filter") || "ALL";
+          renderAll();
+        });
+      });
+    }
+
+    function renderHistoryFeed(sortedRecords) {
+      const filtered =
+        activeFilter === "ALL"
+          ? sortedRecords
+          : sortedRecords.filter((r) => normalizeName(r.smokerName) === activeFilter);
+
+      if (filtered.length === 0) {
+        historyFeed.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="2" y1="15" x2="18" y2="15"/>
+              <line x1="2" y1="19" x2="18" y2="19"/>
+              <path d="M18 15h3v4h-3z"/>
+              <path d="M20 11c0-2-2-2-2-4s2-2 2-4"/>
+            </svg>
+            <p>Todavía no hay pitis registrados.</p>
+            <p style="font-size: 0.76rem; margin-top: 4px;">Cada piti que selléis aparecerá aquí con su código inmutable.</p>
+          </div>
+        `;
+        return;
+      }
+
+      historyFeed.innerHTML = filtered
+        .map((item) => {
+          const cleanName = escapeHtml(normalizeName(item.smokerName));
+          const initial = cleanName.charAt(0) || "P";
+          const statedTime = escapeHtml(item.statedTime || "--:--");
+          const statedDate = escapeHtml(formatDisplayDate(item.statedDate || ""));
+          const note = escapeHtml(item.note || "");
+          const sealCode = escapeHtml(item.sealHash || computeSealHash(item.smokerName, item.statedDate, item.statedTime, item.createdAtMs));
+          const auditClock = formatAuditTime(item.createdAtMs);
+
+          return `
+            <div class="history-item">
+              <div class="history-item-top">
+                <div class="history-who">
+                  <span class="smoker-avatar">${initial}</span>
+                  <div>
+                    <div class="history-who-name">${cleanName}</div>
+                    <div style="font-size: 0.74rem; color: var(--text-secondary);">Puso el piti el ${statedDate}</div>
+                  </div>
+                </div>
+                <div class="history-stated-time" title="Hora declarada del piti">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  ${statedTime}
+                </div>
+              </div>
+
+              ${note ? `<div class="history-context">${note}</div>` : ""}
+
+              <div class="history-meta">
+                <span>Auditado a las ${auditClock}</span>
+                <span class="seal-badge" title="Registro permanente bloqueado contra borrado">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                  </svg>
+                  #${sealCode}
+                </span>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    // =========================================================================
+    // PERSISTENCIA GLOBAL (FIRESTORE + FALLBACK AUTOMÁTICO SIN PÉRDIDA)
+    // =========================================================================
+    function loadFallbackRecords() {
+      try {
+        const raw = window.localStorage.getItem(FALLBACK_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            pitiRecords = parsed;
+            renderAll();
+          }
+        }
+      } catch (e) {
+        console.warn("Aviso leyendo almacenamiento local:", e);
+      }
+    }
+
+    function saveFallbackRecords(records) {
+      try {
+        window.localStorage.setItem(FALLBACK_STORAGE_KEY, JSON.stringify(records));
+      } catch (e) {
+        console.warn("Aviso guardando copia local:", e);
+      }
+    }
+
+    async function initPersistence() {
+      loadFallbackRecords();
+
+      try {
+        if (typeof __firebase_config === "undefined" || !__firebase_config) {
+          throw new Error("Modo autónomo local activo");
+        }
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        // Regla 3: Autenticar SIEMPRE antes de realizar consultas
+        if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+          currentUser = user;
+          if (user) {
+            subscribeToGlobalLedger();
+          }
+        });
+      } catch (err) {
+        // Si no hay config externa, funciona de inmediato con persistencia en el navegador
+        useCloud = false;
+        syncBadge.classList.add("online");
+        syncText.textContent = "Memoria Sellada Activa";
+        renderAll();
+      }
+    }
+
+    function subscribeToGlobalLedger() {
+      if (!currentUser || !db) return;
+
+      // Regla 1 y 2: Ruta estricta pública sin orderBy/limit compuestos
+      const pitisColRef = collection(db, "artifacts", appId, "public", "data", "pitis");
+
+      onSnapshot(
+        pitisColRef,
+        (snapshot) => {
+          useCloud = true;
+          syncBadge.classList.add("online");
+          syncText.textContent = "Sincronizado en Vivo";
+
+          const fetched = [];
+          snapshot.forEach((docSnap) => {
+            fetched.push({
+              id: docSnap.id,
+              ...docSnap.data()
+            });
+          });
+
+          pitiRecords = fetched;
+          saveFallbackRecords(pitiRecords);
+          renderAll();
+        },
+        (error) => {
+          console.error("Error en sincronización en vivo:", error);
+          useCloud = false;
+          syncBadge.classList.add("online");
+          syncText.textContent = "Respaldo Local Activo";
+        }
+      );
+    }
+
+    async function commitImmutablePiti(entry) {
+      // Añadir de forma optimista e inmutable
+      pitiRecords = [entry, ...pitiRecords];
+      saveFallbackRecords(pitiRecords);
+      renderAll();
+
+      if (useCloud && currentUser && db) {
+        try {
+          const pitisColRef = collection(db, "artifacts", appId, "public", "data", "pitis");
+          await addDoc(pitisColRef, entry);
+        } catch (err) {
+          console.error("Error guardando en nube, conservado en memoria local:", err);
+        }
+      }
+    }
+
+    // =========================================================================
+    // EVENTOS DE FORMULARIO Y MODAL DE CONFIRMACIÓN
+    // =========================================================================
+    setNowBtn.addEventListener("click", () => {
+      fillCurrentDateTime();
+    });
+
+    smokerNameInput.addEventListener("input", () => {
+      const pills = quickSmokersList.querySelectorAll(".smoker-pill");
+      const currentVal = normalizeName(smokerNameInput.value).toLowerCase();
+      pills.forEach((pill) => {
+        const pillName = (pill.getAttribute("data-smoker") || "").toLowerCase();
+        pill.classList.toggle("active", pillName === currentVal);
+      });
+    });
+
+    // Selección de chips de contexto rápido
+    contextChips.querySelectorAll(".context-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const text = chip.getAttribute("data-context") || "";
+        const isAlreadyActive = chip.classList.contains("active");
+
+        contextChips.querySelectorAll(".context-chip").forEach((c) => c.classList.remove("active"));
+
+        if (!isAlreadyActive) {
+          chip.classList.add("active");
+          pitiNoteInput.value = text;
+        } else if (pitiNoteInput.value === text) {
+          pitiNoteInput.value = "";
+        }
+      });
+    });
+
+    // Envío del formulario -> Abre el Modal Anti-Raterío
+    pitiForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const cleanName = normalizeName(smokerNameInput.value);
+      if (!cleanName) {
+        smokerNameInput.focus();
+        showToast("Escribe o selecciona quién ha puesto el piti");
+        return;
+      }
+
+      if (!pitiTimeInput.value || !pitiDateInput.value) {
+        fillCurrentDateTime();
+      }
+
+      const nowMs = Date.now();
+      const statedTime = pitiTimeInput.value;
+      const statedDate = pitiDateInput.value;
+      const note = pitiNoteInput.value.trim();
+      const sealHash = computeSealHash(cleanName, statedDate, statedTime, nowMs);
+
+      pendingEntry = {
+        smokerName: cleanName,
+        statedTime,
+        statedDate,
+        note,
+        createdAtMs: nowMs,
+        sealHash,
+        authorUid: currentUser ? currentUser.uid : "anon"
+      };
+
+      previewName.textContent = cleanName;
+      previewDateTime.textContent = `${statedTime} (${formatDisplayDate(statedDate)})`;
+      previewNote.textContent = note || "Sin nota adicional";
+
+      confirmModal.classList.add("open");
+    });
+
+    cancelModalBtn.addEventListener("click", () => {
+      pendingEntry = null;
+      confirmModal.classList.remove("open");
+    });
+
+    confirmModal.addEventListener("click", (e) => {
+      if (e.target === confirmModal) {
+        pendingEntry = null;
+        confirmModal.classList.remove("open");
+      }
+    });
+
+    confirmSealBtn.addEventListener("click", async () => {
+      if (!pendingEntry) return;
+
+      const entryToSave = { ...pendingEntry };
+      pendingEntry = null;
+      confirmModal.classList.remove("open");
+
+      await commitImmutablePiti(entryToSave);
+
+      // Limpiar nota pero mantener la hora actualizada para el siguiente
+      pitiNoteInput.value = "";
+      contextChips.querySelectorAll(".context-chip").forEach((c) => c.classList.remove("active"));
+      fillCurrentDateTime();
+
+      showToast(`Piti de ${entryToSave.smokerName} sellado (#${entryToSave.sealHash})`);
+    });
+
+    // Inicializar al cargar
+    fillCurrentDateTime();
+    initPersistence();
+  </script>
+</body>
+</html>
